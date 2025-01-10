@@ -1,0 +1,52 @@
+body {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    background: linear-gradient(to bottom right, #e8faff, #f3e7f3);
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 100%;
+    min-height: 100vh;
+    padding-bottom: 80px;
+}
+
+.transparent-table th, .transparent-table td {
+    background-color: transparent;
+}
+
+.artwork-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.artwork-item {
+    text-align: center;
+}
+
+.artwork-thumbnail-container {
+    width: 100%;
+    padding-top: 100%;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.artwork-thumbnail {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.artwork-title {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.artwork-score {
+    margin-top: 5px;
+    font-style: italic;
+}
+
