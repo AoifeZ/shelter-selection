@@ -59,14 +59,14 @@
                         : '';
 
                     return `
-                        <div class="row mt-5">
+                        <div class="row">
                             <!-- Left Column: Image -->
-                            <div class="col-md-4">
+                            <div class="col-md-4 mt-5">
                                 <img src="${artwork.Image || ''}" class="img-fluid artwork-image" alt="${artwork.Title || 'Artwork'}">
                             </div>
                             
                             <!-- Right Column: Details -->
-                            <div class="col-md-8">
+                            <div class="col-md-8 mt-5">
                                 ${title}
                                 ${connectsToTheme}
                                 ${dimensions}
