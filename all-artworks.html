@@ -29,7 +29,6 @@
                 const container = document.getElementById('all-artworks-container');
                 container.innerHTML = artworks.map((artwork, index) => {
                     const title = artwork.Title ? `<h3 class="card-title my-3">${artwork.Title}</h3>` : '';
-                    const content = artwork.Content ? `<p><strong>Content:</strong> ${artwork.Content}</p>` : '';
                     const connectsToTheme = artwork["How it connects to the theme of Shelter"] 
                         ? `<p><strong>How it connects to the theme:</strong> ${artwork["How it connects to the theme of Shelter"]}</p>` 
                         : '';
