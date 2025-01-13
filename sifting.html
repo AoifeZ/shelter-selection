@@ -18,7 +18,7 @@
             </div>
         </div>
     </nav>
-    
+
     <div class="container d-flex justify-content-between my-3 pb-5">
         <button id="prev-button" class="btn btn-success">Previous</button>
         <button id="next-button" class="btn btn-success">Next</button>
@@ -30,117 +30,99 @@
 
     <script>
         let currentIndex = 0;
-let artworks = [];
+        let artworks = [];
 
-// Fetch JSON data
-fetch('data.json')
-    .then(response => response.json())
-    .then(data => {
-        artworks = data;
-        const artworkID = new URLSearchParams(window.location.search).get('id');
-        currentIndex = artworks.findIndex(artwork => artwork.ID == artworkID);
+        // Fetch JSON data
+        fetch('data.json')
+            .then(response => response.json())
+            .then(data => {
+                artworks = data;
+                const artworkID = new URLSearchParams(window.location.search).get('id');
+                currentIndex = artworks.findIndex(artwork => artwork.ID == artworkID);
 
-        if (currentIndex < 0) currentIndex = 0; // Default to the first artwork if not found
-        loadArtwork(currentIndex);
-    })
-    .catch(error => {
-        console.error("Error loading JSON:", error);
-        document.getElementById("artwork-container").innerHTML = "<p>Error loading artworks. Please try again later.</p>";
-    });
+                if (currentIndex < 0) currentIndex = 0; // Default to the first artwork if not found
+                loadArtwork(currentIndex);
+            })
+            .catch(error => {
+                console.error("Error loading JSON:", error);
+                document.getElementById("artwork-container").innerHTML = "<p>Error loading artworks. Please try again later.</p>";
+            });
 
-// Load artwork details into the page
-function loadArtwork(index) {
-    const artwork = artworks[index];
-    const container = document.getElementById("artwork-container");
+        // Load artwork details into the page
+        function loadArtwork(index) {
+            const artwork = artworks[index];
+            const container = document.getElementById("artwork-container");
 
-    if (!artwork) {
-        container.innerHTML = "<p>No artwork found.</p>";
-        return;
-    }
+            if (!artwork) {
+                container.innerHTML = "<p>No artwork found.</p>";
+                return;
+            }
 
-    // Replace \n with <br> for fields with line breaks
-    const formattedContent = artwork.Content.replace(/\n/g, '<br>');
-    const formattedConnection = artwork["How it connects to the theme of Shelter"].replace(/\n/g, '<br>');
+            // Replace \n with <br> for fields with line breaks
+            const formattedContent = artwork.Content ? artwork.Content.replace(/\n/g, '<br>') : '';
+            const formattedConnection = artwork["How it connects to the theme of Shelter"]
+                ? artwork["How it connects to the theme of Shelter"].replace(/\n/g, '<br>')
+                : '';
 
-    container.innerHTML = `
+            container.innerHTML = `
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <img src="${artwork.Image}" class="img-fluid" alt="${artwork.Title}">
-                <div class="mt-2">
-                    <strong>Open Image:</strong>
-                    <a href="${artwork.Image}" target="_blank">${artwork.Image}</a>
-                </div>
+                <img src="${artwork.Image || ''}" class="img-fluid" alt="${artwork.Title || 'Artwork'}">
+                ${artwork.Image ? `<div class="mt-2"><strong>Open Image:</strong> <a href="${artwork.Image}" target="_blank">${artwork.Image}</a></div>` : ''}
             </div>
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-body bg-body-secondary">
                         <p><strong>#</strong> ${index + 1}</p>
-                        <h3 class="card-title my-3">${artwork.Title}</h3>
+                        ${artwork.Title ? `<h3 class="card-title my-3">${artwork.Title}</h3>` : ''}
+                        <!--${formattedContent ? `<p class="card-text">${formattedContent}</p>` : ''}-->
                         
-                        <p class="card-text">${formattedContent}</p>
-
                         <div class="row mb-3">
-                            <div class="col-md-2">
-                                <strong>W:</strong> ${artwork.W || 'N/A'}
-                            </div>
-                            <div class="col-md-2">
-                                <strong>H:</strong> ${artwork.H || 'N/A'}
-                            </div>
-                            <div class="col-md-2">
-                                <strong>D:</strong> ${artwork.D || 'N/A'}
-                            </div>
-                            <div class="col-md-2">
-                                <strong>Y:</strong> ${artwork.Y || 'N/A'}
-                            </div>
-                            <div class="col-md-2">
-                                <strong>AI:</strong> ${artwork.AI || 'N/A'}
-                            </div>
+                            ${artwork.W ? `<div class="col-md-2"><strong>W:</strong> ${artwork.W}</div>` : ''}
+                            ${artwork.H ? `<div class="col-md-2"><strong>H:</strong> ${artwork.H}</div>` : ''}
+                            ${artwork.D ? `<div class="col-md-2"><strong>D:</strong> ${artwork.D}</div>` : ''}
+                            ${artwork.Y ? `<div class="col-md-2"><strong>Y:</strong> ${artwork.Y}</div>` : ''}
                         </div>
 
                         <div class="row mb-3">
-                            <div class="col-md-6">
-                                <strong>Material:</strong> ${artwork.Material || 'N/A'}
-                            </div>
-                            <div class="col-md-6">
-                                <strong>Other material:</strong> ${artwork["Other material"] || 'N/A'}
-                            </div>
+                            ${artwork.Material ? `<div class="col-md-6"><strong>Material:</strong> ${artwork.Material}</div>` : ''}
+                            ${artwork["Other material"] ? `<div class="col-md-6"><strong>Other material:</strong> ${artwork["Other material"]}</div>` : ''}
                         </div>
 
-                        <p><strong>How the artwork connects to the theme of Shelter:</strong> ${formattedConnection || 'N/A'}</p>
-                        <p>
-                            <strong>Recorded / Alternative Answer:</strong> 
-                                ${artwork["Recorded answer"] ? `<a href="${artwork["Recorded answer"]}" target="_blank"> ${artwork["Recorded answer"]} </a>` : "N/A"}
-                        </p>
+                        ${formattedConnection ? `<p><strong>How the artwork connects to the theme of Shelter:</strong> ${formattedConnection}</p>` : ''}
+                        ${artwork["Recorded answer"] ? `
+                            <p>
+                                <strong>Recorded / Alternative Answer:</strong> 
+                                <a href="${artwork["Recorded answer"]}" target="_blank">${artwork["Recorded answer"]}</a>
+                            </p>` : ''}
                     </div>  
                 </div>
             </div>
         </div>
     </div>
     `;
-}
+        }
 
+        // Add navigation button listeners
+        document.getElementById("prev-button").addEventListener("click", () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                loadArtwork(currentIndex);
+            }
+        });
 
-// Add navigation button listeners
-document.getElementById("prev-button").addEventListener("click", () => {
-    if (currentIndex > 0) {
-        currentIndex--;
-        loadArtwork(currentIndex);
-    }
-});
+        document.getElementById("next-button").addEventListener("click", () => {
+            if (currentIndex < artworks.length - 1) {
+                currentIndex++;
+                loadArtwork(currentIndex);
+            }
+        });
 
-document.getElementById("next-button").addEventListener("click", () => {
-    if (currentIndex < artworks.length - 1) {
-        currentIndex++;
-        loadArtwork(currentIndex);
-    }
-});
-
-document.getElementById("show-scores").addEventListener("click", () => {
-    window.location.href = "list.html";
-});
+        document.getElementById("show-scores").addEventListener("click", () => {
+            window.location.href = "list.html";
+        });
     </script>
-    <script src="download.js"></script>
 </body>
 
 </html>
