@@ -86,21 +86,24 @@
             return null;
         }
 
-        // Update pagination controls (previous, next buttons, and page info)
         function updatePaginationControls() {
             const prevButton = document.getElementById('prev-button');
             const nextButton = document.getElementById('next-button');
             const pageInfo = document.getElementById('page-info');
 
+            // Calculate total pages
+            const totalPages = Math.ceil(artworks.length / artworksPerPage);
+
             // Enable/disable the previous button
             prevButton.disabled = currentPage === 1;
 
             // Enable/disable the next button
-            nextButton.disabled = currentPage === Math.ceil(artworks.length / artworksPerPage);
+            nextButton.disabled = currentPage === totalPages;
 
             // Update the page info
-            pageInfo.textContent = `Page ${currentPage}`;
+            pageInfo.textContent = `Page ${currentPage} / ${totalPages}`;
         }
+
 
         // Event listener for the previous button
         document.getElementById('prev-button').addEventListener('click', () => {
